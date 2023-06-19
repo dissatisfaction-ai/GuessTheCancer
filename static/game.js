@@ -67,7 +67,7 @@ function startNewGame() {
                 checkMark.innerHTML = "&#10003;";  // Unicode character for checkmark
                 checkMark.style.display = "none";  // Hidden by default
             
-                img.addEventListener("click", function() {
+                imgContainer.addEventListener("click", function() {
                     this.classList.toggle("selected");
                     checkMark.style.display = this.classList.contains("selected") ? "block" : "none";
                     if (this.classList.contains("selected")) {
@@ -237,6 +237,20 @@ function createChart() {
     // Generate labels
     const labels = Array.from({length: roundsPlayed}, (_, i) => i + 1);
 
+    // Function to determine the aspect ratio
+    function getAspectRatio() {
+        // Use matchMedia to check if the device is in portrait mode
+        const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+        return isPortrait ? 1.2 : 1.2; // return 0.75 for portrait mode and 1.33 for landscape mode
+    }
+
+    // Event listener for orientation changes
+    window.addEventListener("resize", function() {
+        chart.options.aspectRatio = getAspectRatio();
+        chart.update();
+    });
+
+    // When creating the chart
     chart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -273,7 +287,10 @@ function createChart() {
                     beginAtZero: true,
                     max: 100
                 }
-            }
+            },
+            responsive: true,
+            maintainAspectRatio: true,
+            aspectRatio: getAspectRatio() // Call the function to set the initial aspect ratio
         }
     });
     
