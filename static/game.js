@@ -35,13 +35,22 @@ function startNewGame() {
 
             images.forEach(image => {
                 let col = document.createElement("div");
-                // col.className = "col-6 col-md-4 mb-4";  // Bootstrap classes for responsive design
+            
+                let imgContainer = document.createElement("div");
+                imgContainer.classList.add("img-container");
             
                 let img = document.createElement("img");
                 img.src = '/static/' + image;
                 img.classList.add("image-box");
+            
+                let checkMark = document.createElement("div");
+                checkMark.classList.add("checkmark");
+                checkMark.innerHTML = "&#10003;";  // Unicode character for checkmark
+                checkMark.style.display = "none";  // Hidden by default
+            
                 img.addEventListener("click", function() {
                     this.classList.toggle("selected");
+                    checkMark.style.display = this.classList.contains("selected") ? "block" : "none";
                     if (this.classList.contains("selected")) {
                         selections.push(image);
                     } else {
@@ -49,9 +58,13 @@ function startNewGame() {
                         if (index !== -1) selections.splice(index, 1);
                     }
                 });
-                col.appendChild(img);  // Add the img to the col element
-                imageArea.appendChild(col);  // Add the col to the imageArea
+            
+                imgContainer.appendChild(img);
+                imgContainer.appendChild(checkMark);
+                col.appendChild(imgContainer);
+                imageArea.appendChild(col);
             });
+            
 
             // Hide the chart container when not needed
             document.getElementById('chartContainer').style.display = 'none';
@@ -111,10 +124,15 @@ function submitAnswers() {
                 let imgName = image.src.split('/').slice(-2).join('/'); // ensure that we are comparing the correct path
                 if (results.correct_guesses.includes(imgName)) {
                     image.classList.add("correct");
+                    image.parentElement.classList.add("correct");
+                    console.log(image.parentElement);
+
                 }
                 // if image was fake but not selected, mark as incorrect
                 if (!selections.includes(imgName) && results.fake_images.includes(imgName)) {
                     image.classList.add("incorrect");
+                    image.parentElement.classList.add("incorrect");
+                    console.log(image.parentElement);
                 }
                 
             });

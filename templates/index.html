@@ -37,7 +37,7 @@
             justify-items: center;
             align-items: center;
             flex: 1 1 auto;
-            overflow: auto;
+            overflow: visible;
         }
 
         .image-box {
@@ -62,8 +62,10 @@
         @media (max-width: 576px) {
             #imageArea {
                 grid-template-columns: repeat(2, 1fr);
-                max-width: 350px;
+                max-width: 400px;
+                padding-bottom: 10%;
                 margin: 0 auto;
+                padding: 0 33px;
             }
             .image-box {
                 max-height: 170px;
@@ -75,7 +77,7 @@
             display: grid;
             grid-template-rows: repeat(3, 1fr);  /* one row for each button */
             gap: 10px;  /* space between rows, adjust as needed */
-            height: 140px;  /* height of the container, adjust as needed */
+            height: 120px;  /* height of the container, adjust as needed */
             overflow: hidden;
             padding-top: 10px;
             padding-bottom: 10px;
@@ -94,21 +96,56 @@
             margin-top: 0 !important;
         }   
 
-        .selected {
-            border-color: blue;
-            border-width: 7px;
-        }
         .correct {
-            border-color: green;
-            border-width: 7px;
+            border-color: green !important;
         }
         .incorrect {
-            border-color: red;
-            border-width: 7px;
+            border-color:  red !important;
         }
+
+
+
         #results {
             font-size: 1.5em;
             margin-top: 20px;
+        }
+
+        .img-container {
+            position: relative;
+            border: 5px solid transparent;
+        }
+
+        .img-container::before {
+            content: '';
+            position: absolute;
+            top: 15px; 
+            left: 7px; 
+            background-color: black;
+            width: 35px; 
+            height: 35px; 
+            border-radius: 50%;  
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.6;
+            z-index: 0; /* Places it behind the checkmark */
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 10px; 
+            left: 10px;  
+            color: white;
+            font-size: 30px; 
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);  
+            width: 35px; 
+            height: 35px; 
+            border-radius: 50%;  
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1; /* Places it in front of the pseudo-element */
         }
 
         
@@ -116,7 +153,7 @@
 </head>
 <body class="bg-light">
     <div class="container">
-        <h1 class="text-center">Real or Not? - Cancer Image Game</h1>
+        <h2 class="text-center">Real or Not? - Cancer Image Game</h1>
         <div id="gameArea" class="hidden">
             <p class="lead text-center">Can you spot the difference between real and AI-generated cancer images? Click the fake ones and see how well you do!</p>
             <!-- <p class="lead text-center">Guess which cancer images are not real?</p> -->
