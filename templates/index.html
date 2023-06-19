@@ -16,7 +16,11 @@
             flex-direction: column;
             justify-content: space-between;
             height: 100%;
-            padding: 5%;
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+
         }
 
         #gameArea {
@@ -68,16 +72,27 @@
         }
 
         #buttonsWrapper {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            min-height: 10%;
+            display: grid;
+            grid-template-rows: repeat(3, 1fr);  /* one row for each button */
+            gap: 10px;  /* space between rows, adjust as needed */
+            height: 140px;  /* height of the container, adjust as needed */
+            overflow: hidden;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .d-none {
+            visibility: hidden;
+            opacity: 0;
         }
 
         #chartContainer {
             display: none; /* Add this line to initially hide the chart container */
         }
 
+        .btn-block + .btn-block {
+            margin-top: 0 !important;
+        }   
 
         .selected {
             border-color: blue;
@@ -102,17 +117,18 @@
 <body class="bg-light">
     <div class="container">
         <h1 class="text-center">Real or Not? - Cancer Image Game</h1>
-        <p class="lead text-center">Can you spot the difference between real and AI-generated cancer images? Click the fake ones and see how well you do!</p>
-        <button id="startButton" class="btn btn-primary btn-lg btn-block">Start Game</button>
         <div id="gameArea" class="hidden">
+            <p class="lead text-center">Can you spot the difference between real and AI-generated cancer images? Click the fake ones and see how well you do!</p>
             <!-- <p class="lead text-center">Guess which cancer images are not real?</p> -->
             <p id="roundNumber" class="text-center"></p>
+            <button id="startButton" class="btn btn-primary btn-lg btn-block">Start Game</button>
             <div id="imageArea" class="row"></div>
         </div>    
         <div id="chartContainer" class="hidden">
             <canvas id="myChart"></canvas>
+            <div id="results" class="text-center hidden"></div>
         </div>        
-        <div id="results" class="text-center hidden"></div>
+        
         <div id="buttonsWrapper">
             <button id="submitButton" class="btn btn-success btn-lg btn-block d-none">Submit</button>
             <button id="nextRoundButton" class="btn btn-warning btn-lg btn-block d-none">Next Round</button>

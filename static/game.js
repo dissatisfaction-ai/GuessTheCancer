@@ -178,7 +178,15 @@ document.getElementById("finishGameButton").addEventListener("click", function()
 
 });
 
+// Preserve reference to the chart so we can destroy it later.
+let chart;
+
 function createChart() {
+    // If the chart already exists, destroy it before we create a new one.
+    if (chart) {
+        chart.destroy();
+    }
+
     const ctx = document.getElementById('myChart').getContext('2d');
     const roundsPlayed = correctAnswersByRound.length;
 
@@ -189,7 +197,7 @@ function createChart() {
     // Generate labels
     const labels = Array.from({length: roundsPlayed}, (_, i) => i + 1);
 
-    const chart = new Chart(ctx, {
+    chart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
@@ -220,3 +228,11 @@ function createChart() {
     });
 }
 
+// Listen for resize events
+window.addEventListener('resize', () => {
+    // Destroy the chart and recreate it
+    if (chart) {
+        chart.destroy();
+        createChart();
+    }
+});
