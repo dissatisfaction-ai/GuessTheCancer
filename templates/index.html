@@ -20,7 +20,6 @@
             padding-right: 20px;
             padding-top: 20px;
             padding-bottom: 20px;
-
         }
 
         #gameArea {
@@ -103,8 +102,6 @@
             border-color:  red !important;
         }
 
-
-
         #results {
             font-size: 1.5em;
             margin-top: 20px;
@@ -147,19 +144,65 @@
             justify-content: center;
             z-index: 1; /* Places it in front of the pseudo-element */
         }
-
-        
+        .selectionArea {
+            margin: 10% auto;
+        }
     </style>
 </head>
 <body class="bg-light">
     <div class="container">
         <h2 class="text-center">Real or Not? - Cancer Image Game</h1>
+        <div id="selectionArea" class="selectionArea">
+            <p class="lead text-center">Select Cancer Type</p>
+            <form id="cancerTypeForm">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="cancerType" value="TCGA-COAD" id="TCGA-COAD">
+                    <label class="form-check-label" for="TCGA-COAD">
+                        Colorectal Adenocarcinoma
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="cancerType" value="TCGA-BRCA" id="TCGA-BRCA" checked="checked">
+                    <label class="form-check-label" for="TCGA-BRCA">
+                        Breast Invasive Carcinoma
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="cancerType" value="TCGA-LUAD" id="TCGA-LUAD">
+                    <label class="form-check-label" for="TCGA-LUAD">
+                        Lung Adenocarcinoma
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="cancerType" value="TCGA-OV" id="TCGA-OV">
+                    <label class="form-check-label" for="TCGA-OV">
+                        Ovarian Serous Cystadenocarcinoma
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="cancerType" value="TCGA-SKCM" id="TCGA-SKCM">
+                    <label class="form-check-label" for="TCGA-SKCM">
+                        Skin Cutaneous Melanoma
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="cancerType" value="TCGA-PRAD" id="TCGA-PRAD">
+                    <label class="form-check-label" for="TCGA-PRAD">
+                        Prostate Adenocarcinoma
+                    </label>
+                </div>
+            </form>
+        </div>
+        
         <div id="gameArea" class="hidden">
-            <p class="lead text-center">Can you spot the difference between real and AI-generated cancer images? Click the fake ones and see how well you do!</p>
-            <!-- <p class="lead text-center">Guess which cancer images are not real?</p> -->
+            <p class="text-center">Can you spot the difference between real and AI-generated cancer images?
+                 Click the fakes and see how well you can do!</p>
+            <button id="startButton" class='btn btn-primary btn-lg btn-block'>Start Game</button>
             <p id="roundNumber" class="text-center"></p>
-            <button id="startButton" class="btn btn-primary btn-lg btn-block">Start Game</button>
             <div id="imageArea" class="row"></div>
+            <p id="guess-indicator" class="text-center" style="display: none;">
+                <span style="color:green;">Real</span> / <span style="color:red;">Fake</span> images
+            </p>
         </div>    
         <div id="chartContainer" class="hidden">
             <canvas id="myChart"></canvas>

@@ -2,20 +2,39 @@ let selections = [];
 let total_correct = 0;
 let total_incorrect = 0;
 let correctAnswersByRound = [];
-const totalImages = 3; // Total number of images per round
-
+const totalImages = 6; // Total number of images per round
+let selectedTypes = [];
 
 
 window.onload = function() {
     fetch('/reset', {method: 'POST'})
         .then(() => {
-            document.getElementById("startButton").addEventListener("click", startNewGame);
+            let cancerTypeForm = document.getElementById("selectionArea");
+            let startButton = document.getElementById("startButton");
+            startButton.style.display = "block"; 
+            cancerTypeForm.style.display = "block";  // Show cancer type form initially
+
+            startButton.addEventListener("click", function() {
+                let selectedCancerType = document.querySelector('input[name="cancerType"]:checked').value;
+                if (selectedCancerType) {
+                    cancerTypeForm.style.display = "none";  // Hide cancer type form when start button is clicked
+                    startButton.style.display = "none";  
+                    startNewGame(selectedCancerType);
+                } else {
+                    alert("Please select a cancer type to start the game.");
+                }
+            });
         });
 }
-
 function startNewGame() {
-    document.getElementById("results").style.display = "none"; // Hide results if shown
-    fetch('/start', {method: 'POST'})
+    let selectedType = document.querySelector('input[name="cancerType"]:checked').value;
+    fetch('/start', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({cancerType: selectedType})
+    })
         .then(response => response.json())
         .then(data => {
             selections = []; // Clear selections
@@ -76,6 +95,9 @@ function startNewGame() {
             // Show the submit button
             document.getElementById("submitButton").style.display = "block";
             document.getElementById("submitButton").addEventListener("click", submitAnswers);
+            document.getElementById("guess-indicator").style.display = "none";  // Hide guess indicator
+
+            
             
             // Get the submit button
             let submitButton = document.getElementById("submitButton");
@@ -121,18 +143,16 @@ function submitAnswers() {
             let images = Array.from(document.getElementsByClassName("image-box"));
 
             images.forEach(image => {
-                let imgName = image.src.split('/').slice(-2).join('/'); // ensure that we are comparing the correct path
-                if (results.correct_guesses.includes(imgName)) {
+                let imgName = image.src.split('/').slice(-3).join('/'); // ensure that we are comparing the correct pat
+                console.log(imgName);
+                if (!results.fake_images.includes(imgName)) {
                     image.classList.add("correct");
                     image.parentElement.classList.add("correct");
-                    console.log(image.parentElement);
-
                 }
                 // if image was fake but not selected, mark as incorrect
-                if (!selections.includes(imgName) && results.fake_images.includes(imgName)) {
+                if (results.fake_images.includes(imgName)) {
                     image.classList.add("incorrect");
                     image.parentElement.classList.add("incorrect");
-                    console.log(image.parentElement);
                 }
                 
             });
@@ -145,6 +165,7 @@ function submitAnswers() {
 
             // Hide the submit button
             document.getElementById("submitButton").style.display = "none";
+            document.getElementById("guess-indicator").style.display = "block";
 
             if (results.round < 10) {
                 // Show the next round button
@@ -155,14 +176,6 @@ function submitAnswers() {
             // Always display the finish game button after each submission
             document.getElementById("finishGameButton").style.display = "block";
             document.getElementById("finishGameButton").classList.remove("d-none");
-
-
-            // In the submitAnswers function, when the round is less than 5, show the next round button
-            if (results.round < 5) {
-                document.getElementById("nextRoundButton").classList.remove("d-none");
-            // If the round is not less than 5, show the finish game button
-            document.getElementById("finishGameButton").classList.remove("d-none");
-            }
             
 
         });
@@ -170,8 +183,14 @@ function submitAnswers() {
 
 
 
+document.querySelectorAll("input[type='checkbox']:checked").forEach(checkbox => selectedTypes.push(checkbox.value));
 
-document.getElementById("nextRoundButton").addEventListener("click", startNewGame);
+document.getElementById("nextRoundButton").addEventListener("click", function() {
+    // Hide the other two buttons
+    document.getElementById("submitButton").style.display = "none";
+    document.getElementById("finishGameButton").style.display = "none";
+    startNewGame();
+});
 
 document.getElementById("finishGameButton").addEventListener("click", function() {
     let resultsDiv = document.getElementById("results");
@@ -187,14 +206,17 @@ document.getElementById("finishGameButton").addEventListener("click", function()
 
     // Hide game area
     document.getElementById("gameArea").style.display = "none";
+    // Hide the other two buttons
+    document.getElementById("submitButton").style.display = "none";
+    document.getElementById("nextRoundButton").style.display = "none";
     // Change finish game button text to "Try again"
     let finishGameButton = document.getElementById("finishGameButton");
     finishGameButton.innerText = "Try again";
     // Add click event to reload the page
     finishGameButton.replaceWith(finishGameButton.cloneNode(true));
     document.getElementById("finishGameButton").addEventListener("click", () => location.reload());
-
 });
+
 
 // Preserve reference to the chart so we can destroy it later.
 let chart;
@@ -236,6 +258,16 @@ function createChart() {
             ]
         },
         options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Your Game Performance',
+                    font: {
+                        size: 20,
+                    },
+                    color: 'black'
+                }
+            },
             scales: {
                 y: {
                     beginAtZero: true,
@@ -244,6 +276,7 @@ function createChart() {
             }
         }
     });
+    
 }
 
 // Listen for resize events
