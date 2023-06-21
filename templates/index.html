@@ -1,35 +1,17 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-         <!-- jQuery library -->
-         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    
-         <!-- Bootstrap 5 CSS -->
-         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-         <!-- Bootstrap 5 JavaScript Bundle with Popper -->
-         <<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-
-        <!-- Your custom script -->
-        <script>
-            $(document).ready(function(){
-              $('[data-bs-toggle="collapse"]').click(function() {
-                var button = $(this);
-                var target = $(button.attr('data-bs-target'));
-    
-                target.on('shown.bs.collapse', function () {
-                    button.text('Contract [-]');
-                });
-    
-                target.on('hidden.bs.collapse', function () {
-                    button.text('Expand [+]');
-                });
-              });
-            });
-         </script>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+     <!-- Google tag (gtag.js) -->
+     <script async src="https://www.googletagmanager.com/gtag/js?id=G-VMBQWW34YQ"></script>
+     <script>
+       window.dataLayer = window.dataLayer || [];
+       function gtag(){dataLayer.push(arguments);}
+       gtag('js', new Date());
+ 
+       gtag('config', 'G-VMBQWW34YQ');
+     </script>
     <title>Real or Not? - Cancer Image Game</title>
     <style>
         body, html {
