@@ -1,10 +1,36 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+         <!-- jQuery library -->
+         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+         <!-- Bootstrap 5 CSS -->
+         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+         <!-- Bootstrap 5 JavaScript Bundle with Popper -->
+         <<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+
+        <!-- Your custom script -->
+        <script>
+            $(document).ready(function(){
+              $('[data-bs-toggle="collapse"]').click(function() {
+                var button = $(this);
+                var target = $(button.attr('data-bs-target'));
+    
+                target.on('shown.bs.collapse', function () {
+                    button.text('Contract [-]');
+                });
+    
+                target.on('hidden.bs.collapse', function () {
+                    button.text('Expand [+]');
+                });
+              });
+            });
+         </script>
     <title>Real or Not? - Cancer Image Game</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body, html {
             margin: 0;
@@ -16,7 +42,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            height: 100%;
+            /* height: 100%; */
             padding-left: 20px;
             padding-right: 20px;
             padding-top: 20px;
@@ -58,6 +84,16 @@
             .container {
                 max-width: 720px;
             }
+            #collapse1 {
+                display: block !important;
+            }
+            .lead {
+            font-size: 1.2em;
+            }
+            .text {
+            font-size: 1.2em;
+            }
+
         }
 
         @media (max-width: 576px) and (max-height: 843px) {
@@ -66,6 +102,12 @@
             }
             .container {
                 max-width: 720px;
+            }
+            .lead {
+            font-size: 0.8em;
+            }
+            .text {
+            font-size: 0.8em;
             }
         }
 
@@ -83,6 +125,12 @@
                 object-fit: cover; /* This will prevent distortion of the images */
 
             }
+            .lead {
+            font-size: 1.0em;
+            }
+            .text {
+            font-size: 1.0em;
+            }
         }
 
         #buttonsWrapper {
@@ -93,6 +141,11 @@
             overflow: hidden;
             padding-top: 10px;
             padding-bottom: 10px;
+        }
+
+        .bottom {
+            position: absolute;
+            bottom: 0; /* set the bottom to 0*/
         }
 
         .d-none {
@@ -158,60 +211,89 @@
             z-index: 1; /* Places it in front of the pseudo-element */
         }
         .selectionArea {
-            margin: 10% auto;
+            margin: 5% auto;
         }
+
+
+
+        .justify {
+            text-align: justify;
+        }
+        
+        .cancerTypeFrom{
+            padding-top: 15px;
+        }
+
+
+
     </style>
 </head>
 <body class="bg-light">
     <div class="container">
         <h3 class="text-center">Real or Not? - Cancer Image Game</h1>
         <div id="selectionArea" class="selectionArea">
-            <p class="lead text-center">Select Cancer Type</p>
-            <form id="cancerTypeForm">
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="cancerType" value="TCGA-COAD" id="TCGA-COAD">
-                    <label class="form-check-label" for="TCGA-COAD">
-                        Colorectal Adenocarcinoma
-                    </label>
+            <p class="lead justify">As the cutting-edge field of <a href="https://en.wikipedia.org/wiki/Generative_model">Generative models</a> continues to captivate us with its advancements, the question arises: could their applications extend beyond the creation of visually engaging images? We, at the <a href="https://www.dkfz.de/en/AI-in-oncology/index.php">AI in Oncology group</a>, firmly believe so!</p>
+            <div class="container">
+                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                  Expand [+]
+                </button>
+                <div class="collapse" id="collapseExample">
+                  <div class="card card-body lead">
+                    These models can decode the subtle relationships between visual aspects of histopathological images and related molecular traits, like mutations or expression patterns. Unlike many Deep Learning models, generative ones yield results that are intuitive to humans. Through conditional generation, we might tackle the enduring task of discerning cancer-specific features from tissue variability, paving the way for robust, explainable digital medicine AI.
+                  </div>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="cancerType" value="TCGA-BRCA" id="TCGA-BRCA" checked="checked">
-                    <label class="form-check-label" for="TCGA-BRCA">
-                        Breast Invasive Carcinoma
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="cancerType" value="TCGA-LUAD" id="TCGA-LUAD">
-                    <label class="form-check-label" for="TCGA-LUAD">
-                        Lung Adenocarcinoma
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="cancerType" value="TCGA-OV" id="TCGA-OV">
-                    <label class="form-check-label" for="TCGA-OV">
-                        Ovarian Serous Cystadenocarcinoma
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="cancerType" value="TCGA-SKCM" id="TCGA-SKCM">
-                    <label class="form-check-label" for="TCGA-SKCM">
-                        Skin Cutaneous Melanoma
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="cancerType" value="TCGA-PRAD" id="TCGA-PRAD">
-                    <label class="form-check-label" for="TCGA-PRAD">
-                        Prostate Adenocarcinoma
-                    </label>
+              </div>              
+            <p class="lead justify">We invite you to test these models firsthand. Can you discern between AI-generated and genuine histology images? Choose a cancer type and let the game begin:</p>
+            <form id="cancerTypeForm" class="cancerTypeFrom text">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="cancerType" value="TCGA-COAD" id="TCGA-COAD">
+                            <label class="form-check-label" for="TCGA-COAD">
+                                Colorectal Adenocarcinoma
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="cancerType" value="TCGA-BRCA" id="TCGA-BRCA" checked="checked">
+                            <label class="form-check-label" for="TCGA-BRCA">
+                                Breast Invasive Carcinoma
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="cancerType" value="TCGA-LUAD" id="TCGA-LUAD">
+                            <label class="form-check-label" for="TCGA-LUAD">
+                                Lung Adenocarcinoma
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="cancerType" value="TCGA-OV" id="TCGA-OV">
+                            <label class="form-check-label" for="TCGA-OV">
+                                Ovarian Cystadenocarcinoma
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="cancerType" value="TCGA-SKCM" id="TCGA-SKCM">
+                            <label class="form-check-label" for="TCGA-SKCM">
+                                Skin Cutaneous Melanoma
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="cancerType" value="TCGA-PRAD" id="TCGA-PRAD">
+                            <label class="form-check-label" for="TCGA-PRAD">
+                                Prostate Adenocarcinoma
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
         
         <div id="gameArea" class="hidden">
-            <p class="text-center">Can you spot the difference between real and AI-generated cancer images?
-                 Click the fakes and see how well you can do!</p>
             <button id="startButton" class='btn btn-primary btn-lg btn-block'>Start Game</button>
-            <p id="roundNumber" class="text-center"></p>
+            <p class="lead text-center" style="padding-top: 1em;">Can you spot the difference between real and AI-generated cancer images? Click the 3 fakes and see how well you can do!</p>
+            <p id="roundNumber" class="text-center text"></p>
             <div id="imageArea" class="row"></div>
             <p id="guess-indicator" class="text-center" style="display: none;">
                 <span style="color:green;">Real</span> / <span style="color:red;">Fake</span> images
